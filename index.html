@@ -46,6 +46,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preload" as="image"
+        href="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&h=600&fit=crop&q=80"
+        fetchpriority="high">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
@@ -287,6 +292,19 @@
             animation-play-state: paused;
         }
 
+        .journey-progress {
+            transform-origin: left center;
+            will-change: transform;
+        }
+
+        #features,
+        #how-it-works,
+        #testimonials,
+        #contact {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 900px;
+        }
+
         .testimonial-card {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
@@ -354,6 +372,7 @@
 </head>
 
 <body class="bg-leaf-950 text-white antialiased">
+    
 
     <nav id="navbar"
         class="nav-glass fixed top-3 sm:top-4 inset-x-3 sm:inset-x-6 lg:inset-x-8 z-50 rounded-2xl md:rounded-full px-4 sm:px-8">
@@ -538,7 +557,20 @@
                             </svg>
                             Explore Features
                         </a>
+                        <button type="button" id="get-location-button"
+                            class="group inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl border border-leaf-400/50 bg-leaf-400/10 text-base font-semibold text-leaf-200 hover:bg-leaf-400/20 transition-all duration-300"
+                            aria-describedby="location-status">
+                            <svg class="w-5 h-5 text-leaf-400 group-hover:scale-110 transition-transform" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 21a9 9 0 006.219-15.506A9 9 0 105.78 18.506 8.963 8.963 0 0012 21z" />
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 11.25a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Get My Location
+                        </button>
                     </div>
+                    <p id="location-status" class="text-sm text-white/60 -mt-4" role="status" aria-live="polite"></p>
 
                     <!-- <div class="flex items-center gap-4 pt-2 animate-slide-up" style="animation-delay: 0.45s;">
                         <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl glass text-xs text-white/70">
@@ -788,15 +820,17 @@
                 </p>
             </div>
 
-            <div class="grid lg:grid-cols-3 gap-8 relative">
+            <div id="farm-journey" class="grid lg:grid-cols-3 gap-8 relative">
 
                 <div
-                    class="hidden lg:block absolute top-[72px] left-[16.67%] right-[16.67%] h-px bg-gradient-to-r from-transparent via-leaf-500/30 to-transparent">
+                    class="hidden lg:block absolute top-[72px] left-[16.67%] right-[16.67%] h-px bg-white/10 rounded-full overflow-hidden">
+                    <div class="journey-progress h-full w-full bg-gradient-to-r from-leaf-400 via-sun-400 to-leaf-300">
+                    </div>
                 </div>
 
-                <div class="relative text-center reveal reveal-delay-1">
+                <div class="journey-step relative text-center reveal reveal-delay-1">
                     <div
-                        class="w-16 h-16 rounded-2xl bg-gradient-to-br from-leaf-500 to-leaf-700 flex items-center justify-center text-2xl font-display font-bold mx-auto mb-8 shadow-lg shadow-leaf-500/30 relative z-10">
+                        class="journey-marker w-16 h-16 rounded-2xl bg-gradient-to-br from-leaf-500 to-leaf-700 flex items-center justify-center text-2xl font-display font-bold mx-auto mb-8 shadow-lg shadow-leaf-500/30 relative z-10">
                         1
                     </div>
                     <div class="glass-card rounded-3xl p-8">
@@ -813,9 +847,9 @@
                     </div>
                 </div>
 
-                <div class="relative text-center reveal reveal-delay-2">
+                <div class="journey-step relative text-center reveal reveal-delay-2">
                     <div
-                        class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sun-500 to-sun-700 flex items-center justify-center text-2xl font-display font-bold mx-auto mb-8 shadow-lg shadow-sun-500/30 relative z-10 text-leaf-950">
+                        class="journey-marker w-16 h-16 rounded-2xl bg-gradient-to-br from-sun-500 to-sun-700 flex items-center justify-center text-2xl font-display font-bold mx-auto mb-8 shadow-lg shadow-sun-500/30 relative z-10 text-leaf-950">
                         2
                     </div>
                     <div class="glass-card rounded-3xl p-8">
@@ -832,9 +866,9 @@
                     </div>
                 </div>
 
-                <div class="relative text-center reveal reveal-delay-3">
+                <div class="journey-step relative text-center reveal reveal-delay-3">
                     <div
-                        class="w-16 h-16 rounded-2xl bg-gradient-to-br from-leaf-400 to-leaf-600 flex items-center justify-center text-2xl font-display font-bold mx-auto mb-8 shadow-lg shadow-leaf-400/30 relative z-10">
+                        class="journey-marker w-16 h-16 rounded-2xl bg-gradient-to-br from-leaf-400 to-leaf-600 flex items-center justify-center text-2xl font-display font-bold mx-auto mb-8 shadow-lg shadow-leaf-400/30 relative z-10">
                         3
                     </div>
                     <div class="glass-card rounded-3xl p-8">
@@ -1194,12 +1228,87 @@
         window.addEventListener('scroll', handleScroll, { passive: true });
         updateNavbar();
 
+        const locationButton = document.getElementById('get-location-button');
+        const locationStatus = document.getElementById('location-status');
+
+        locationButton.addEventListener('click', () => {
+            if (!navigator.geolocation) {
+                locationStatus.textContent = 'Location is not supported by this browser.';
+                return;
+            }
+
+            locationStatus.textContent = 'Requesting your location…';
+            locationButton.disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+                ({ coords }) => {
+                    const mapsUrl = `https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`;
+                    // Use the current tab so the redirect is not stopped by popup blockers.
+                    window.location.assign(mapsUrl);
+                    locationStatus.textContent = 'Opening your location in Google Maps…';
+                    locationButton.disabled = false;
+                },
+                (error) => {
+                    const messages = {
+                        1: 'Location permission was denied.',
+                        2: 'Your location is currently unavailable.',
+                        3: 'Location request timed out. Please try again.',
+                    };
+                    locationStatus.textContent = messages[error.code] || 'Unable to get your location.';
+                    locationButton.disabled = false;
+                },
+                { enableHighAccuracy: true, timeout: 20000, maximumAge: 60000 }
+            );
+        });
+
         const mobileNavToggle = document.getElementById('mobile-nav-toggle');
         document.querySelectorAll('#mobile-menu a').forEach((link) => {
             link.addEventListener('click', () => {
                 mobileNavToggle.checked = false;
             });
         });
+
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const loadScript = (src) => new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+
+        const initialiseFarmJourney = () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            const journeySteps = gsap.utils.toArray('.journey-step');
+            const journeyMarkers = gsap.utils.toArray('.journey-marker');
+            const journeyProgress = document.querySelector('.journey-progress');
+
+            gsap.set(journeySteps, { autoAlpha: 0, y: 28 });
+            gsap.set(journeyMarkers, { scale: 0.7, rotate: -8 });
+            gsap.set(journeyProgress, { scaleX: 0 });
+
+            const journeyTimeline = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '#farm-journey',
+                    start: 'top 72%',
+                    end: 'bottom 58%',
+                    scrub: 0.7,
+                },
+            });
+
+            journeyTimeline
+                .to(journeyProgress, { scaleX: 1, ease: 'none', duration: 1 }, 0)
+                .to(journeySteps, { autoAlpha: 1, y: 0, stagger: 0.22, ease: 'power2.out', duration: 0.55 }, 0.05)
+                .to(journeyMarkers, { scale: 1, rotate: 0, stagger: 0.22, ease: 'back.out(1.7)', duration: 0.45 }, 0.1);
+        };
+
+        if (!reducedMotion && window.matchMedia('(min-width: 1024px)').matches) {
+            loadScript('https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js')
+                .then(() => loadScript('https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js'))
+                .then(initialiseFarmJourney)
+                .catch(() => { });
+        }
     </script>
 </body>
 

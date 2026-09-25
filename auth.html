@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KhetMitra | Farmer Sign In & Registration</title>
+    <meta name="description"
+        content="Sign in or register for KhetMitra. Access AI-driven crop insights, real-time farm advisory, and your customized agri-dashboard.">
+
+    <!-- Tailwind CSS with KhetMitra Theme -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        leaf: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            950: '#052e16',
+                        },
+                        sun: {
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        },
+                    },
+                    fontFamily: {
+                        display: ['Outfit', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #031c0c;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(5, 46, 22, 0.68);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(74, 222, 128, 0.18);
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #4ade80;
+            box-shadow: 0 0 16px rgba(74, 222, 128, 0.24);
+        }
+
+        /* Subtle animated background mesh */
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            opacity: 0.35;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen text-white flex flex-col justify-between relative overflow-x-hidden selection:bg-leaf-500 selection:text-white">
+
+    <!-- Ambient glowing backdrop lighting -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="ambient-orb w-[500px] h-[500px] -top-32 -left-20 bg-leaf-600/30"></div>
+        <div class="ambient-orb w-[450px] h-[450px] top-1/3 -right-20 bg-emerald-500/20"></div>
+        <div class="ambient-orb w-[550px] h-[550px] -bottom-32 left-1/4 bg-sun-500/15"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(#15803d_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.07]"></div>
+    </div>
+
+    <!-- Top Navigation Header -->
+    <header class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-3 group" title="Return to KhetMitra Home">
+            <div class="relative w-10 h-10 rounded-xl bg-gradient-to-b from-leaf-800 to-leaf-950 border border-white/20 p-2 flex items-center justify-center shadow-lg shadow-black/40 group-hover:scale-105 transition-transform">
+                <svg class="w-full h-full" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20.5" cy="8.5" r="4" fill="#fbbf24" />
+                    <path d="M14 20.5C14 14.5 8.5 11 5.5 12.5C4.5 16.5 7.5 20 14 20.5Z" fill="#22c55e" />
+                    <path d="M14 21C14 13.5 18.5 6.5 23 5.5C24 11.5 21 17.5 14 21Z" fill="#15803d" />
+                    <path d="M14 22.5V11" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M5 23.5C8.5 22 19.5 22 23 23.5" stroke="#4ade80" stroke-width="1.8" stroke-linecap="round" stroke-opacity="0.8" />
+                </svg>
+            </div>
+            <div>
+                <span class="text-xl font-display font-extrabold tracking-tight text-white">Khet<span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-leaf-400 via-emerald-300 to-sun-300">Mitra</span></span>
+                <span class="block text-[10px] text-leaf-300/70 tracking-widest uppercase font-mono">Farmer Portal</span>
+            </div>
+        </a>
+
+        <!-- Return to Home link -->
+        <a href="index.html"
+            class="flex items-center gap-2 text-xs sm:text-sm font-medium text-leaf-200/80 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full transition-all duration-200">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span>Back to Home</span>
+        </a>
+    </header>
+
+    <!-- Main Content Container (Centered Card Layout) -->
+    <main class="relative z-10 w-full max-w-md sm:max-w-lg mx-auto px-4 py-6 sm:py-10 flex-1 flex flex-col justify-center">
+
+        <!-- Card Container -->
+        <div id="auth-card" class="glass-panel rounded-3xl p-6 sm:p-9 shadow-[0_20px_50px_rgba(0,0,0,0.65),0_0_35px_rgba(34,197,94,0.15)] relative overflow-hidden transition-all duration-300">
+            
+            <!-- Top Ambient Glow Line -->
+            <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-leaf-400 to-sun-400 opacity-70"></div>
+
+            <!-- VIEW 1: Active Session State (Shown when logged in) -->
+            <div id="logged-in-view" class="hidden space-y-6 text-center py-2">
+                <div>
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-leaf-500 to-sun-400 p-0.5 shadow-xl mb-4">
+                        <div class="w-full h-full bg-[#052813] rounded-full flex items-center justify-center">
+                            <span class="text-2xl">👨‍🌾</span>
+                        </div>
+                    </div>
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-leaf-500/20 text-leaf-300 text-xs font-semibold border border-leaf-400/30 mb-2">
+                        <span class="w-2 h-2 rounded-full bg-leaf-400 animate-pulse"></span>
+                        Active Farmer Session
+                    </div>
+                    <h2 class="text-2xl font-display font-bold text-white">Welcome, <span id="session-name" class="text-leaf-300">Farmer</span>!</h2>
+                    <p class="text-xs text-white/60 mt-1" id="session-email">farmer@khetmitra.in</p>
+                </div>
+
+                <!-- Session Information Card -->
+                <div class="bg-black/30 border border-white/10 rounded-2xl p-4 text-xs space-y-2.5 text-left">
+                    <div class="flex justify-between border-b border-white/5 pb-2">
+                        <span class="text-white/50">Location:</span>
+                        <span id="session-state" class="text-white font-medium">Gujarat, India</span>
+                    </div>
+                    <div class="flex justify-between border-b border-white/5 pb-2">
+                        <span class="text-white/50">Crop Focus:</span>
+                        <span id="session-focus" class="text-leaf-300 font-medium">Wheat & Multi-crop</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-white/50">Session Status:</span>
+                        <span class="text-emerald-400 font-medium flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Authenticated
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="space-y-3 pt-1">
+                    <a href="index.html"
+                        class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-leaf-500 via-leaf-600 to-leaf-700 hover:from-leaf-400 hover:to-leaf-600 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-leaf-600/30 hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer">
+                        <span>Go to Farm Dashboard</span>
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+
+                    <button id="logout-btn" type="button"
+                        class="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-red-500/15 border border-white/10 hover:border-red-400/40 text-white/70 hover:text-red-300 text-xs font-medium transition-colors cursor-pointer">
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW 2: Form Switcher (Sign In vs Sign Up) -->
+            <div id="auth-forms-view">
+
+                <!-- Header Title -->
+                <div class="text-center mb-6">
+                    <h1 id="auth-heading" class="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight">
+                        Welcome Back
+                    </h1>
+                    <p id="auth-subheading" class="text-xs sm:text-sm text-leaf-200/70 mt-1.5">
+                        Sign in to access your farm records and live advisory
+                    </p>
+                </div>
+
+                <!-- Tab Segmented Control -->
+                <div class="flex items-center p-1 bg-black/40 border border-white/10 rounded-2xl mb-6 relative">
+                    <button id="tab-login" type="button"
+                        class="flex-1 py-2 text-xs sm:text-sm font-semibold rounded-xl text-white bg-gradient-to-r from-leaf-600 to-leaf-500 shadow-md transition-all cursor-pointer">
+                        Sign In
+                    </button>
+                    <button id="tab-signup" type="button"
+                        class="flex-1 py-2 text-xs sm:text-sm font-medium rounded-xl text-white/60 hover:text-white transition-all cursor-pointer">
+                        Create Account
+                    </button>
+                </div>
+
+                <!-- Feedback Alert Container -->
+                <div id="auth-alert" class="hidden mb-4 p-3 rounded-xl text-xs flex items-start gap-2.5 transition-all"></div>
+
+                <!-- FORM 1: LOGIN FORM -->
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="login-identifier" class="block text-xs font-semibold text-leaf-200 mb-1.5">
+                            Mobile Number or Email
+                        </label>
+                        <div class="relative">
+                            <input id="login-identifier" type="text" required placeholder="e.g. +91 98765 43210 or farmer@khet.in"
+                                class="w-full glass-input rounded-xl px-4 py-3 text-xs sm:text-sm text-white placeholder:text-white/30 outline-none">
+                            <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/30">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label for="login-password" class="block text-xs font-semibold text-leaf-200">
+                                Password
+                            </label>
+                            <a href="#" id="forgot-password-link" class="text-[11px] text-sun-300 hover:text-sun-200 transition-colors">
+                                Forgot password?
+                            </a>
+                        </div>
+                        <div class="relative">
+                            <input id="login-password" type="password" required placeholder="Enter your password"
+                                class="w-full glass-input rounded-xl px-4 py-3 text-xs sm:text-sm text-white placeholder:text-white/30 outline-none pr-10">
+                            <button type="button" class="password-toggle-btn absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-1 cursor-pointer">
+                                <svg class="w-4 h-4 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1">
+                        <label class="flex items-center gap-2 cursor-pointer select-none">
+                            <input id="remember-me" type="checkbox" checked
+                                class="w-4 h-4 rounded border-white/20 bg-white/5 text-leaf-500 focus:ring-leaf-400 focus:ring-offset-0 accent-leaf-500">
+                            <span class="text-xs text-white/70">Remember this session</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" id="login-submit-btn"
+                        class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-leaf-500 via-leaf-600 to-leaf-700 hover:from-leaf-400 hover:to-leaf-600 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-leaf-600/30 hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer mt-2">
+                        <span>Sign In to KhetMitra</span>
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- FORM 2: SIGN UP FORM -->
+                <form id="signup-form" class="space-y-3.5 hidden">
+                    <div>
+                        <label for="signup-name" class="block text-xs font-semibold text-leaf-200 mb-1">
+                            Farmer / Full Name
+                        </label>
+                        <input id="signup-name" type="text" required placeholder="e.g. Ramesh Patel"
+                            class="w-full glass-input rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-white/30 outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label for="signup-phone" class="block text-xs font-semibold text-leaf-200 mb-1">
+                                Mobile Number
+                            </label>
+                            <input id="signup-phone" type="tel" required placeholder="+91 98765 00000"
+                                class="w-full glass-input rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-white/30 outline-none">
+                        </div>
+                        <div>
+                            <label for="signup-state" class="block text-xs font-semibold text-leaf-200 mb-1">
+                                State
+                            </label>
+                            <select id="signup-state" required
+                                class="w-full glass-input rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white outline-none bg-[#052813]">
+                                <option value="Gujarat" selected>Gujarat</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Other">Other States</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="signup-farm-type" class="block text-xs font-semibold text-leaf-200 mb-1">
+                            Primary Crop Focus
+                        </label>
+                        <select id="signup-farm-type"
+                            class="w-full glass-input rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white outline-none bg-[#052813]">
+                            <option value="Wheat & Grains">Wheat & Grains (गेहूं / धान्य)</option>
+                            <option value="Cotton & Cash Crops">Cotton & Cash Crops (कपास / नकदी)</option>
+                            <option value="Vegetables & Fruits">Vegetables & Fruits (सब्जियां / बागवानी)</option>
+                            <option value="Pulses & Oilseeds">Pulses & Oilseeds (दालें / तिलहन)</option>
+                            <option value="Organic Farming">Certified Organic (जैविक खेती)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="signup-password" class="block text-xs font-semibold text-leaf-200 mb-1">
+                            Create Password
+                        </label>
+                        <div class="relative">
+                            <input id="signup-password" type="password" required minlength="6" placeholder="At least 6 characters"
+                                class="w-full glass-input rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-white/30 outline-none pr-10">
+                            <button type="button" class="password-toggle-btn absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-1 cursor-pointer">
+                                <svg class="w-4 h-4 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-1">
+                        <input id="signup-terms" type="checkbox" required
+                            class="w-4 h-4 rounded border-white/20 bg-white/5 text-leaf-500 focus:ring-leaf-400 focus:ring-offset-0 accent-leaf-500">
+                        <label for="signup-terms" class="text-[11px] text-white/70 select-none">
+                            I agree to KhetMitra's <a href="#" class="text-leaf-300 underline">Terms of Service</a> and <a href="#" class="text-leaf-300 underline">Privacy Policy</a>.
+                        </label>
+                    </div>
+
+                    <button type="submit" id="signup-submit-btn"
+                        class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-leaf-500 via-leaf-600 to-leaf-700 hover:from-leaf-400 hover:to-leaf-600 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-leaf-600/30 hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer mt-2">
+                        <span>Register & Create Account</span>
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Trust & Security Subtext -->
+        <div class="mt-5 text-center text-xs text-white/40 flex items-center justify-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-leaf-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd" />
+            </svg>
+            <span>256-Bit SSL Encrypted & Private Farmer Data</span>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 w-full text-center py-6 text-xs text-white/40 border-t border-white/5">
+        <p>&copy; 2026 KhetMitra. Smart Farming, Smarter Future. All rights reserved.</p>
+    </footer>
+
+    <!-- Auth Logic Script (Session Storage API) -->
+    <script>
+        (function () {
+            const STORAGE_KEY = 'khetmitra_user_session';
+
+            // DOM Elements
+            const loggedInView = document.getElementById('logged-in-view');
+            const authFormsView = document.getElementById('auth-forms-view');
+            const tabLogin = document.getElementById('tab-login');
+            const tabSignup = document.getElementById('tab-signup');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const authHeading = document.getElementById('auth-heading');
+            const authSubheading = document.getElementById('auth-subheading');
+            const authAlert = document.getElementById('auth-alert');
+            const logoutBtn = document.getElementById('logout-btn');
+
+            // Session view elements
+            const sessionName = document.getElementById('session-name');
+            const sessionEmail = document.getElementById('session-email');
+            const sessionState = document.getElementById('session-state');
+            const sessionFocus = document.getElementById('session-focus');
+
+            // Read session from sessionStorage
+            function getSession() {
+                try {
+                    const raw = sessionStorage.getItem(STORAGE_KEY);
+                    return raw ? JSON.parse(raw) : null;
+                } catch (e) {
+                    return null;
+                }
+            }
+
+            // Save session to sessionStorage
+            function saveSession(userObj) {
+                const sessionPayload = {
+                    ...userObj,
+                    sessionToken: 'KM-' + Math.random().toString(36).substring(2, 9).toUpperCase(),
+                    authenticatedAt: new Date().toISOString()
+                };
+
+                // Store in HTML5 Session Storage API
+                sessionStorage.setItem(STORAGE_KEY, JSON.stringify(sessionPayload));
+                updateUI();
+                return sessionPayload;
+            }
+
+            // Clear session from sessionStorage
+            function clearSession() {
+                sessionStorage.removeItem(STORAGE_KEY);
+                updateUI();
+                showAlert('success', 'Logged out successfully.');
+            }
+
+            // Display alert banner
+            function showAlert(type, message) {
+                authAlert.className = 'mb-4 p-3 rounded-xl text-xs flex items-start gap-2.5 transition-all';
+                if (type === 'error') {
+                    authAlert.classList.add('bg-red-500/20', 'border', 'border-red-500/40', 'text-red-200');
+                    authAlert.innerHTML = `
+                        <svg class="w-4 h-4 text-red-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span>${message}</span>
+                    `;
+                } else {
+                    authAlert.classList.add('bg-leaf-500/20', 'border', 'border-leaf-400/40', 'text-leaf-200');
+                    authAlert.innerHTML = `
+                        <svg class="w-4 h-4 text-leaf-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        <span>${message}</span>
+                    `;
+                }
+                authAlert.classList.remove('hidden');
+            }
+
+            function hideAlert() {
+                authAlert.classList.add('hidden');
+            }
+
+            // Sync UI with current sessionStorage state
+            function updateUI() {
+                const session = getSession();
+
+                if (session) {
+                    authFormsView.classList.add('hidden');
+                    loggedInView.classList.remove('hidden');
+
+                    sessionName.textContent = session.name || 'Farmer Friend';
+                    sessionEmail.textContent = session.identifier || session.phone || 'farmer@khetmitra.in';
+                    sessionState.textContent = session.state || 'Gujarat, India';
+                    sessionFocus.textContent = session.cropFocus || 'Precision Agriculture';
+                } else {
+                    loggedInView.classList.add('hidden');
+                    authFormsView.classList.remove('hidden');
+                }
+            }
+
+            // Switch Tabs (Sign In vs Sign Up)
+            function switchTab(target) {
+                hideAlert();
+                if (target === 'signup') {
+                    tabSignup.className = 'flex-1 py-2 text-xs sm:text-sm font-semibold rounded-xl text-white bg-gradient-to-r from-leaf-600 to-leaf-500 shadow-md transition-all cursor-pointer';
+                    tabLogin.className = 'flex-1 py-2 text-xs sm:text-sm font-medium rounded-xl text-white/60 hover:text-white transition-all cursor-pointer';
+
+                    loginForm.classList.add('hidden');
+                    signupForm.classList.remove('hidden');
+
+                    authHeading.textContent = 'Join KhetMitra';
+                    authSubheading.textContent = 'Create your account for smart agricultural insights';
+                } else {
+                    tabLogin.className = 'flex-1 py-2 text-xs sm:text-sm font-semibold rounded-xl text-white bg-gradient-to-r from-leaf-600 to-leaf-500 shadow-md transition-all cursor-pointer';
+                    tabSignup.className = 'flex-1 py-2 text-xs sm:text-sm font-medium rounded-xl text-white/60 hover:text-white transition-all cursor-pointer';
+
+                    signupForm.classList.add('hidden');
+                    loginForm.classList.remove('hidden');
+
+                    authHeading.textContent = 'Welcome Back';
+                    authSubheading.textContent = 'Sign in to access your farm records and live advisory';
+                }
+            }
+
+            tabLogin.addEventListener('click', () => switchTab('login'));
+            tabSignup.addEventListener('click', () => switchTab('signup'));
+
+            // Toggle Password visibility
+            document.querySelectorAll('.password-toggle-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const input = btn.previousElementSibling;
+                    if (input && input.type === 'password') {
+                        input.type = 'text';
+                        btn.classList.add('text-sun-300');
+                    } else if (input) {
+                        input.type = 'password';
+                        btn.classList.remove('text-sun-300');
+                    }
+                });
+            });
+
+            // Handle Login Form Submission
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                hideAlert();
+
+                const identifier = document.getElementById('login-identifier').value.trim();
+                const password = document.getElementById('login-password').value;
+
+                if (!identifier || !password) {
+                    showAlert('error', 'Please provide your mobile/email and password.');
+                    return;
+                }
+
+                if (password.length < 4) {
+                    showAlert('error', 'Password must be at least 4 characters.');
+                    return;
+                }
+
+                const submitBtn = document.getElementById('login-submit-btn');
+                const originalHtml = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `
+                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Signing In...</span>
+                `;
+
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalHtml;
+
+                    const userObj = {
+                        name: identifier.includes('@') ? identifier.split('@')[0] : 'Farmer ' + identifier.slice(-4),
+                        identifier: identifier,
+                        state: 'Gujarat, India',
+                        cropFocus: 'Precision Agriculture'
+                    };
+
+                    saveSession(userObj);
+                    showAlert('success', 'Sign In successful! Redirecting to farm dashboard...');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 700);
+                }, 350);
+            });
+
+            // Handle Sign Up Form Submission
+            signupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                hideAlert();
+
+                const name = document.getElementById('signup-name').value.trim();
+                const phone = document.getElementById('signup-phone').value.trim();
+                const state = document.getElementById('signup-state').value;
+                const cropFocus = document.getElementById('signup-farm-type').value;
+                const password = document.getElementById('signup-password').value;
+                const terms = document.getElementById('signup-terms').checked;
+
+                if (!name || !phone || !state || !password) {
+                    showAlert('error', 'Please fill in all required registration fields.');
+                    return;
+                }
+
+                if (!terms) {
+                    showAlert('error', 'Please agree to the Terms of Service to continue.');
+                    return;
+                }
+
+                const submitBtn = document.getElementById('signup-submit-btn');
+                const originalHtml = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `
+                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Creating Account...</span>
+                `;
+
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalHtml;
+
+                    const userObj = {
+                        name: name,
+                        identifier: phone,
+                        state: state,
+                        cropFocus: cropFocus
+                    };
+
+                    saveSession(userObj);
+                    showAlert('success', 'Account created! Redirecting to farm dashboard...');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 700);
+                }, 350);
+            });
+
+            // Logout listener
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', clearSession);
+            }
+
+            // Initialize on load
+            updateUI();
+        })();
+    </script>
+</body>
+
+</html>
